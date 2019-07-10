@@ -213,7 +213,7 @@ public class ExcelWriter {
                 isColumn = true;
                 continue;
             }
-            if (isColumn && !line.contains("ENGINE=InnoDB") && !line.contains("PRIMARY KEY")) {
+            if (isColumn && !line.contains("ENGINE = InnoDB") && line.trim().startsWith("`")) {
                 column = new Column();
                 String colName = line.substring(line.indexOf("`") + 1, line.lastIndexOf("`"));
                 String[] strArray = line.split(" ");
@@ -222,7 +222,7 @@ public class ExcelWriter {
                     colype = strArray[3].substring(0, strArray[3].indexOf(")") + 1);
                 }
                 String colDescribe = "";
-                int commentIndex = line.indexOf("COMMENT");
+                int commentIndex = line.indexOf(" COMMENT ");
                 if (commentIndex > 0) {
                     String commentStr = line.substring(commentIndex);
                     colDescribe = commentStr.substring(commentStr.indexOf("'") + 1, commentStr.lastIndexOf("'"));
@@ -233,7 +233,7 @@ public class ExcelWriter {
                 cols.add(column);
                 continue;
             }
-            if (line.contains("ENGINE=InnoDB")) {
+            if (line.contains("ENGINE = InnoDB")) {
                 String tableCN = "";
                 if (line.indexOf("'") >= 0) {
                     tableCN = line.substring(line.indexOf("'") + 1, line.lastIndexOf("'"));
@@ -251,7 +251,8 @@ public class ExcelWriter {
 
     public static void main(String[] args) throws Exception {
 
-        String dirPath = "/Users/yanchuan/Desktop/test";
+        /**String dirPath = "/Users/yanchuan/Desktop/DustoPRE表结构";**/
+        String dirPath = "/Users/yanqiang/Downloads/00_startdt/public";
         List<String> files = FileReader.readDir(dirPath);
         for (String filePath : files) {
             List<String> list = FileReader.readFileByLines(filePath);
